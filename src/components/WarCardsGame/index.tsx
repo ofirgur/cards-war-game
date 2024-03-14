@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { useDrawCardsFromDeck } from '../../hooks/useDrawCardsFromDeck';
 import { useReturnCardsToDeck } from '../../hooks/useReturnCardsToDeck';
+import { useReshuffleDeck } from '../../hooks/useReshuffleDeck';
 import { scoreLogic } from './scoreLogic';
 
 import Button from '../Button';
@@ -16,14 +17,15 @@ interface IWarCardsGame {
 
 const WarCardsGame = (props: IWarCardsGame) => {
     const { deckId, gameOverCallback } = props
-    console.log('deckId: ', deckId);
     const { data: { remaining, cards, deck_id }, refetch: cardsDrawRefetch} = useDrawCardsFromDeck(deckId);
+    const { refetch: cardsReshuffleDeck} = useReshuffleDeck(deckId);
     const { refetch: cardsReturnRefetch } = useReturnCardsToDeck(deckId, !cards ? '' : `${cards[0].code},${cards[1].code}`);
-    console.log('data: ', { remaining, cards, deck_id });
-    
     const [score1, setScore1] = useState(0);
     const [score2, setScore2] = useState(0);
 
+    //console.log('deckId: ', deckId);
+    //console.log('data: ', { remaining, cards, deck_id });
+    
     // game over logic
     useEffect(() => {
         if(remaining > 0) return;
@@ -40,6 +42,7 @@ const WarCardsGame = (props: IWarCardsGame) => {
             if(value1 === value2) {
                 setTimeout(() => {
                     cardsReturnRefetch();
+                    cardsReshuffleDeck();
                 }, 1000);
             } else if(value1 > value2) {
                 setScore1(score1 + 2);
