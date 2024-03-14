@@ -24,8 +24,8 @@ const GameStartScreen = () => {
   return (
     <GameStartScreenStyled>
       <Card src="https://deckofcardsapi.com/static/img/KD.png" />
-      <MessageStyled>Welcome to War Game</MessageStyled>
-      <Button onClick={handleStartClick}>Start</Button>
+      <MessageStyled>Welcome to the War</MessageStyled>
+      <Button onClick={handleStartClick}>Start the War</Button>
     </GameStartScreenStyled>
   );
 };

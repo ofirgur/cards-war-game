@@ -11,12 +11,13 @@ interface ICardsView {
 
 const CardsView = (props: ICardsView) => {
     const { cards } = props
+    const has2Cards = cards && cards.length > 1;
 
     return (
         <CardsViewStyled>
-            {cards && <Card src={cards[0].image} />}
+            {has2Cards && <Card src={cards[0].image} />}
             <Card src="https://deckofcardsapi.com/static/img/back.png" />
-            {cards && <Card src={cards[1].image} />}
+            {has2Cards && <Card src={cards[1].image} />}
         </CardsViewStyled>
     );
 };
