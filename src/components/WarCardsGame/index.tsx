@@ -18,7 +18,7 @@ const WarCardsGame = (props: IWarCardsGame) => {
     const { deckId, gameOverCallback } = props
     console.log('deckId: ', deckId);
     const { data: { remaining, cards, deck_id }, refetch} = useDrawCardsFromDeck(deckId);
-    const { refetch: returnRefetch } = useReturnCardsToDeck(deckId, cards ? `${cards[0].code},${cards[1].code}` : '');
+    const { refetch: returnCardsRefetch } = useReturnCardsToDeck(deckId, cards ? `${cards[0].code},${cards[1].code}` : '');
     console.log('data: ', { remaining, cards, deck_id });
     
     const [score1, setScore1] = useState(0);
@@ -32,14 +32,17 @@ const WarCardsGame = (props: IWarCardsGame) => {
 
     const onPlayClick = async () => {
         const response = await refetch();
-        const { data: { cards } } = response;
-
-        if(cards) {
-            const value1 = scoreLogic[cards[0].value];
-            const value2 = scoreLogic[cards[1].value];
+        const { data: { cards: currentCards } } = response;
+        const [card1, card2] = currentCards;
+        
+        if(currentCards && currentCards.length > 1) {
+            const value1 = scoreLogic[card1.value];
+            const value2 = scoreLogic[card2.value];
 
             if(value1 === value2) {
-                returnRefetch();
+                setTimeout(() => {
+                    returnCardsRefetch();
+                }, 1000);
             } else if(value1 > value2) {
                 setScore1(score1 + 2);
             } else {
