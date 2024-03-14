@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { useDrawCardsFromDeck } from '../../hooks/useDrawCardsFromDeck';
+import { useReturnCardsToDeck } from '../../hooks/useReturnCardsToDeck';
 import { scoreLogic } from './scoreLogic';
 
 import Button from '../Button';
@@ -17,6 +18,7 @@ const WarCardsGame = (props: IWarCardsGame) => {
     const { deckId, gameOverCallback } = props
     console.log('deckId: ', deckId);
     const { data: { remaining, cards, deck_id }, refetch} = useDrawCardsFromDeck(deckId);
+    const { refetch: returnRefetch } = useReturnCardsToDeck(deckId, cards ? `${cards[0].code},${cards[1].code}` : '');
     console.log('data: ', { remaining, cards, deck_id });
     
     const [score1, setScore1] = useState(0);
@@ -37,7 +39,7 @@ const WarCardsGame = (props: IWarCardsGame) => {
             const value2 = scoreLogic[cards[1].value];
 
             if(value1 === value2) {
-                // return cards back to deck and re shuffle
+                returnRefetch();
             } else if(value1 > value2) {
                 setScore1(score1 + 2);
             } else {

@@ -3,7 +3,7 @@ import React from 'react';
 import { useGameStateContext } from '../../context';
 import { GameScreen } from '../../types';
 
-import CardsDeck from '../../components/WarCardsGame';
+import WarCardsGame from '../../components/WarCardsGame';
 import { GameCardsScreenStyled } from './styled';
 
 const GameCardsScreen = () => {
@@ -19,7 +19,7 @@ const GameCardsScreen = () => {
 
   return (
     <GameCardsScreenStyled>
-      <CardsDeck deckId={gameState.deckId} gameOverCallback={handleGameOver} />
+      <WarCardsGame deckId={gameState.deckId} gameOverCallback={handleGameOver} />
     </GameCardsScreenStyled>
   );
 };

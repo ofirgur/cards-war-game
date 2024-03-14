@@ -6,7 +6,7 @@ import { INITIAL_GAME_STATE } from '../../constants';
 import GameResults from '../../components/GameResults';
 import Score from '../../components/Score';
 import Button from '../../components/Button';
-import { GameOverScreenStyled } from './styled';
+import { GameOverScreenStyled, MessageStyled } from './styled';
 
 const GameOverScreen = () => {
   const { gameState, setGameState } = useGameStateContext();
@@ -18,6 +18,7 @@ const GameOverScreen = () => {
 
   return (
     <GameOverScreenStyled>
+      <MessageStyled>Game Over</MessageStyled>
       <GameResults>
         <Score isLeader={score1 > score2} isEqual={score1 === score2}>P1: {score1}</Score>
         <Score isLeader={score2 > score1} isEqual={score2 === score1}>P2: {score2}</Score>

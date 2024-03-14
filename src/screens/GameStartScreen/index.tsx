@@ -4,6 +4,7 @@ import { useGameStateContext } from '../../context';
 import { GameScreen } from '../../types';
 import { useBrandNewDeck } from '../../hooks/useBrandNewDeck';
 
+import Card from '../../components/Card';
 import Button from '../../components/Button';
 import { GameStartScreenStyled, MessageStyled } from './styled';
 
@@ -22,6 +23,7 @@ const GameStartScreen = () => {
 
   return (
     <GameStartScreenStyled>
+      <Card src="https://deckofcardsapi.com/static/img/KD.png" />
       <MessageStyled>Welcome to War Game</MessageStyled>
       <Button onClick={handleStartClick}>Start</Button>
     </GameStartScreenStyled>

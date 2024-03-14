@@ -14,9 +14,9 @@ function Dashboard(props: IDashboard) {
     const leader = score1 > score2
     return (
         <DashboardStyled>
-            <Score isLeader={score1 > score2} isEqual={score1 === score2}>{score1}</Score>
+            <Score isLeader={score1 > score2} isEqual={score1 === score2}>P1: {score1}</Score>
             <Score isRemaining>{remaining}</Score>
-            <Score isLeader={score2 > score1} isEqual={score1 === score2}>{score2}</Score>
+            <Score isLeader={score2 > score1} isEqual={score1 === score2}>P2: {score2}</Score>
         </DashboardStyled>
     )
 }
