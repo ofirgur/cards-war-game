@@ -17,8 +17,8 @@ interface IWarCardsGame {
 const WarCardsGame = (props: IWarCardsGame) => {
     const { deckId, gameOverCallback } = props
     console.log('deckId: ', deckId);
-    const { data: { remaining, cards, deck_id }, refetch} = useDrawCardsFromDeck(deckId);
-    const { refetch: returnCardsRefetch } = useReturnCardsToDeck(deckId, cards ? `${cards[0].code},${cards[1].code}` : '');
+    const { data: { remaining, cards, deck_id }, refetch: cardsDrowRefetch} = useDrawCardsFromDeck(deckId);
+    const { refetch: cardsReturnRefetch } = useReturnCardsToDeck(deckId, cards ? `${cards[0].code},${cards[1].code}` : '');
     console.log('data: ', { remaining, cards, deck_id });
     
     const [score1, setScore1] = useState(0);
@@ -31,7 +31,7 @@ const WarCardsGame = (props: IWarCardsGame) => {
     }, [remaining, score1, score2]);
 
     const onPlayClick = async () => {
-        const response = await refetch();
+        const response = await cardsDrowRefetch();
         const { data: { cards: currentCards } } = response;
         const [card1, card2] = currentCards;
         
@@ -41,7 +41,7 @@ const WarCardsGame = (props: IWarCardsGame) => {
 
             if(value1 === value2) {
                 setTimeout(() => {
-                    returnCardsRefetch();
+                    cardsReturnRefetch();
                 }, 1000);
             } else if(value1 > value2) {
                 setScore1(score1 + 2);
