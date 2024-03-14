@@ -17,28 +17,26 @@ interface IWarCardsGame {
 const WarCardsGame = (props: IWarCardsGame) => {
     const { deckId, gameOverCallback } = props
     console.log('deckId: ', deckId);
-    const { data: { remaining, cards, deck_id }, refetch: cardsDrowRefetch} = useDrawCardsFromDeck(deckId);
-    const { refetch: cardsReturnRefetch } = useReturnCardsToDeck(deckId, cards ? `${cards[0].code},${cards[1].code}` : '');
+    const { data: { remaining, cards, deck_id }, refetch: cardsDrawRefetch} = useDrawCardsFromDeck(deckId);
+    const { refetch: cardsReturnRefetch } = useReturnCardsToDeck(deckId, !cards ? '' : `${cards[0].code},${cards[1].code}`);
     console.log('data: ', { remaining, cards, deck_id });
     
     const [score1, setScore1] = useState(0);
     const [score2, setScore2] = useState(0);
 
+    // game over logic
     useEffect(() => {
-        if(remaining === 0) {
-            gameOverCallback(score1, score2);
-        }
+        if(remaining > 0) return;
+        gameOverCallback(score1, score2);
     }, [remaining, score1, score2]);
 
-    const onPlayClick = async () => {
-        const response = await cardsDrowRefetch();
-        const { data: { cards: currentCards } } = response;
-        const [card1, card2] = currentCards;
-        
-        if(currentCards && currentCards.length > 1) {
+    // draw cards drow logic
+    useEffect(() => {
+        if(!cards) return;
+        const handleScore = () => {        
+            const [card1, card2] = cards;
             const value1 = scoreLogic[card1.value];
             const value2 = scoreLogic[card2.value];
-
             if(value1 === value2) {
                 setTimeout(() => {
                     cardsReturnRefetch();
@@ -47,8 +45,13 @@ const WarCardsGame = (props: IWarCardsGame) => {
                 setScore1(score1 + 2);
             } else {
                 setScore2(score2 + 2);
-            } 
-        }
+            }
+        }; 
+        handleScore();
+    }, [cards]);
+
+    const onPlayClick = () => {
+        cardsDrawRefetch();
     };
 
     return (
